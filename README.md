@@ -5,13 +5,13 @@
 
 ## ToDo's
 
-[ ] - document everything
-[ ] - write readme
-[ ] - packagist
-[ ] - StyleCI
-[ ] - Travis
-[ ] - cover the whole code with unit tests
-[ ] - choose license (consider GNU GPLv3)
+- [ ] - document everything
+- [ ] - write readme
+- [ ] - packagist
+- [ ] - StyleCI
+- [ ] - Travis
+- [ ] - cover the whole code with unit tests
+- [ ] - choose license (consider GNU GPLv3)
 
 ### More ToDo's
 
