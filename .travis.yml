@@ -1,0 +1,23 @@
+# .travis.yml
+dist: precise
+
+language: php
+
+php:
+  - 7.1
+
+addons:
+  mariadb: "10.4"
+
+cache:
+  directories:
+    - node_modules
+    - vendor
+
+before_script:
+  - composer self-update
+  - composer install --no-interaction
+  - php artisan migrate --no-interaction -vvv
+
+script:
+  - vendor/bin/phpunit
