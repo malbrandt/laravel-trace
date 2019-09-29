@@ -16,16 +16,16 @@ use Malbrandt\Laravel\Trace\Errors\TracePersistenceError;
 class EloquentTracePersister implements TracePersisterInterface
 {
     /**
-     * @param TraceInterface[] $trace
+     * @param TraceInterface[] $items
      * @param array $options
      * @return mixed
      * @throws TracePersistenceError
      */
-    public function persist($trace, $options = [])
+    public function persist($items, $options = [])
     {
         $numPersisted = 0;
 
-        foreach ($trace as $item) {
+        foreach ($items as $item) {
             if (!is_subclass_of($item, Model::class, false)) {
                 throw new TracePersistenceError(
                     'Cannot persist one of trace items because it is not a Laravel Model.' .

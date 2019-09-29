@@ -9,7 +9,9 @@ use Orchestra\Testbench\TestCase as OrchestraTestbench;
 abstract class TestCase extends OrchestraTestbench
 {
     /**
-     * Examines whether to run the migrations (including test migrations).
+     * Tells if migrations should be run before each test (including migrations from tests dir).
+     *
+     * **Default: false**
      *
      * @var bool
      */
@@ -26,6 +28,7 @@ abstract class TestCase extends OrchestraTestbench
 
     protected function runMigrations()
     {
+        // TODO: add method exists check for loadMigrationsFrom (for compatibility purposes)
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->artisan('migrate', ['--database' => 'testbench'])->run();
     }

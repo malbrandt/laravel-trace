@@ -10,9 +10,9 @@ namespace Malbrandt\Laravel\Trace\Contracts;
 interface TracePersisterInterface
 {
     /**
-     * @param TraceInterface[] $trace
+     * @param TraceInterface[] $items
      * @param array $options
      * @return mixed
      */
-    public function persist($trace, $options = []);
+    public function persist($items, $options = []);
 }

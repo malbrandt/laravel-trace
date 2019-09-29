@@ -2,7 +2,7 @@
     "name": "malbrandt/laravel-trace",
     "description": "An elegant way to append trace to your logic and data.",
     "type": "library",
-    "license": "GNU GPLv3",
+    "license": "GPL-3.0-only",
     "authors": [
         {
             "name": "Marek Malbrandt",
@@ -29,7 +29,8 @@
     },
     "require-dev": {
         "orchestra/testbench": "^3.5",
-        "phpunit/phpunit": "^8.3"
+        "phpunit/phpunit": "^6.5",
+        "orchestra/database": "^3.5"
     },
     "extra": {
         "laravel": {
