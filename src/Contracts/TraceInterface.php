@@ -10,23 +10,22 @@ namespace Malbrandt\Laravel\Trace\Contracts;
  */
 interface TraceInterface
 {
-    const TYPE_INFO = 0x01;
-    const TYPE_DECISION = 0x02;
-    const TYPE_WARNING = 0x04;
-    const TYPE_ERROR = 0x08;
+    const TYPE_INFO = 'INFO';
+    const TYPE_WARNING = 'WARNING';
+    const TYPE_ERROR = 'ERROR';
 
     /**
      * Returns this trace item type. See interface constants.
      *
-     * @return int
+     * @return string
      */
     public function getType();
 
     /**
-     * Sets this trace item type. See interface constants.
+     * Sets this trace item type.
      *
-     * @param int $type
-     * @return mixed
+     * @param string $type
+     * @return self
      */
     public function setType($type);
 
@@ -42,38 +41,6 @@ interface TraceInterface
     public function setMessage($message);
 
     /**
-     * @return string
-     */
-    public function getSource();
-
-    /**
-     * @param string $source
-     */
-    public function setSource($source);
-
-    /**
-     * @return mixed|null
-     */
-    public function getParent();
-
-    /**
-     * @param mixed $parent
-     * @return self
-     */
-    public function setParent($parent);
-
-    /**
-     * @return mixed|null
-     */
-    public function getAuthor();
-
-    /**
-     * @param mixed $author
-     * @return self
-     */
-    public function setAuthor($author);
-
-    /**
      * @param array $context
      * @return self
      */
@@ -83,4 +50,15 @@ interface TraceInterface
      * @return array
      */
     public function getContext();
+
+    /**
+     * @return string|null
+     */
+    public function getSource();
+
+    /**
+     * @param string|null $source
+     * @return self
+     */
+    public function setSource($source);
 }

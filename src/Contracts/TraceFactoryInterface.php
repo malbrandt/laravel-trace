@@ -26,7 +26,6 @@ interface TraceFactoryInterface
      *
      * @see TraceInterface::TYPE_WARNING
      * @see TraceInterface::TYPE_ERROR
-     * @see TraceInterface::TYPE_DECISION
      * @see TraceInterface::TYPE_INFO
      */
     public function make($message, $type, $context = [], $source = null);

@@ -3,7 +3,8 @@
 namespace Malbrandt\Laravel\Trace\Contracts;
 
 /**
- * TODO:1.1: docs
+ * It describes role that is responsible for collecting trace items.
+ * Can be used to extend or modify the way of collecting each item.
  *
  * Interface TraceCollectorInterface
  * @package Malbrandt\Laravel\TraceModel\Contracts
@@ -39,18 +40,7 @@ interface TraceCollectorInterface
      *
      * @param string $name
      * @param callable $collector
-     * @return mixed
+     * @return self
      */
     public function addContextResolver($name, $collector);
-
-    /**
-     * @return AuthorResolverInterface
-     */
-    public function getAuthorResolver();
-
-    /**
-     * @param AuthorResolverInterface $resolver
-     * @return mixed
-     */
-    public function setAuthorResolver($resolver);
 }

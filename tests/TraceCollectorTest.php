@@ -53,14 +53,12 @@ class TraceCollectorInterfaceTest extends TestCase
         $this->collector->collect($info = Trace::prepare('info', TraceInterface::TYPE_INFO));
         $this->collector->collect($warning = Trace::prepare('warning', TraceInterface::TYPE_WARNING));
         $this->collector->collect($error = Trace::prepare('error', TraceInterface::TYPE_ERROR));
-        $this->collector->collect($decision = Trace::prepare('decision', TraceInterface::TYPE_DECISION));
 
         $collected = $this->collector->getCollectedTrace();
 
         $this->assertEquals($info, $collected[0]);
         $this->assertEquals($warning, $collected[1]);
         $this->assertEquals($error, $collected[2]);
-        $this->assertEquals($decision, $collected[3]);
     }
 
     /** @test */

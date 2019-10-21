@@ -28,7 +28,7 @@ abstract class TestCase extends OrchestraTestbench
 
     protected function runMigrations()
     {
-        // TODO: add method exists check for loadMigrationsFrom (for compatibility purposes)
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->artisan('migrate', ['--database' => 'testbench'])->run();
     }

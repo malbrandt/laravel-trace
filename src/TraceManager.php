@@ -37,7 +37,7 @@ class TraceManager implements TraceManagerInterface
      *
      * @var bool
      */
-    protected $persistImmediately;
+    private $persistImmediately;
     /**
      * @var TraceCollectorInterface
      */
@@ -53,7 +53,7 @@ class TraceManager implements TraceManagerInterface
 
     public function __construct(TraceCollectorInterface $collector, TracePersisterInterface $persister, TraceFactoryInterface $factory)
     {
-        $this->persistImmediately = config('trace.persistence.moment') === 'immediately';
+        $this->persistImmediately(config('trace.persistence.moment') === 'immediately');
         $this->raiseTraceCollectedEvents = (bool)config('trace.events.TraceCollected');
         $this->raiseTracePersistedEvents = (bool)config('trace.events.TracePersisted');
 
@@ -61,19 +61,21 @@ class TraceManager implements TraceManagerInterface
         $this->persister = $persister;
         $this->factory = $factory;
 
-        (bool)config('trace.enabled') ? $this->enable() : $this->disable();
+        (bool)config('trace.enabled')
+            ? $this->enable()
+            : $this->disable();
     }
 
-    public function info($message, $context = [], $parent = null)
+    public function info($message, $context = [])
     {
         return $this->collect(
             $this->prepare($message, TraceInterface::TYPE_INFO, $context, $this->examineCaller())
-        )->setParent($parent);
+        );
     }
 
     public function collect($trace)
     {
-        if (!$this->isEnabled) {
+        if (! $this->isEnabled) {
             return null;
         }
 
@@ -94,7 +96,7 @@ class TraceManager implements TraceManagerInterface
 
     public function persist($options = [])
     {
-        if (!$this->isEnabled) {
+        if (! $this->isEnabled) {
             return 0;
         }
 
@@ -167,25 +169,18 @@ class TraceManager implements TraceManagerInterface
         $this->persister = $persister;
     }
 
-    public function warning($message, $context = [], $parent = null)
+    public function warning(string $message, array $context = [])
     {
         return $this->collect(
             $this->prepare($message, TraceInterface::TYPE_WARNING, $context, $this->examineCaller())
-        )->setParent($parent);
+        );
     }
 
-    public function error($message, $context = [], $parent = null)
+    public function error(string $message, array $context = [])
     {
         return $this->collect(
             $this->prepare($message, TraceInterface::TYPE_ERROR, $context, $this->examineCaller())
-        )->setParent($parent);
-    }
-
-    public function decision($message, $context = [], $parent = null)
-    {
-        return $this->collect(
-            $this->prepare($message, TraceInterface::TYPE_DECISION, $context, $this->examineCaller())
-        )->setParent($parent);
+        );
     }
 
     /**
@@ -222,5 +217,26 @@ class TraceManager implements TraceManagerInterface
     public function disable()
     {
         $this->isEnabled = false;
+    }
+
+    private function persistImmediately($persistImmediately)
+    {
+        if (func_num_args() === 0) {
+            return $this->persistImmediately;
+        }
+
+        $this->persistImmediately = $persistImmediately;
+
+        if ($this->persistImmediately) {
+            app()->terminating(
+                function () {
+                    if (! $this->persistImmediately) {
+                        $this->persist();
+                    }
+                }
+            );
+        }
+
+        return $this;
     }
 }

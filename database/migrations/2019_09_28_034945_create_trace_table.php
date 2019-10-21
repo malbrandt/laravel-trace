@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Malbrandt\Laravel\Trace\Contracts\TraceInterface;
 
 class CreateTraceTable extends Migration
 {
@@ -13,23 +14,17 @@ class CreateTraceTable extends Migration
      */
     public function up()
     {
-        Schema::create('trace', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('message');
-            $table->string('type');
-            $table->text('context');
-            $table->string('source')->nullable();
-
-            // Morph
-            $table->string('parent_id')->nullable();
-            $table->string('parent_type')->nullable();
-
-            // Morph
-            $table->string('author_id')->nullable();
-            $table->string('author_type')->nullable();
-
-            $table->timestamps();
-        });
+        Schema::create(
+            'trace',
+            function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('source')->index();
+                $table->string('type')->default(TraceInterface::TYPE_INFO)->index();
+                $table->string('message');
+                $table->text('context');
+                $table->timestamps();
+            }
+        );
     }
 
     /**

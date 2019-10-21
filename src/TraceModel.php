@@ -5,7 +5,6 @@ namespace Malbrandt\Laravel\Trace;
 
 
 use Illuminate\Database\Eloquent\Model;
-use InvalidArgumentException;
 use Malbrandt\Laravel\Trace\Contracts\TraceInterface;
 
 /**
@@ -20,10 +19,9 @@ class TraceModel extends Model implements TraceInterface
     protected $table = 'trace';
 
     protected $fillable = [
-        'message',
         'type',
+        'message',
         'context',
-        'source',
     ];
 
     protected $casts = [
@@ -85,75 +83,7 @@ class TraceModel extends Model implements TraceInterface
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function getParent()
-    {
-        if (isset($this->attributes['parent_id'], $this->attributes['parent_type'])) {
-            return $this->attributes['parent_type']::find($this->attributes['parent_id']);
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setParent($parent)
-    {
-        if ($parent === null) {
-            $this->attributes['parent_id'] = null;
-            $this->attributes['parent_type'] = null;
-
-            return $this;
-        }
-
-        if (!is_a($parent, Model::class)) {
-            throw new InvalidArgumentException('Invalid parent given. Tip: parent should be an Eloquent Model.');
-        }
-
-        $this->attributes['parent_id'] = $parent->getKey();
-        $this->attributes['parent_type'] = get_class($parent);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getAuthor()
-    {
-        if (isset($this->attributes['author_id'], $this->attributes['author_type'])) {
-            return $this->attributes['author_type']::find($this->attributes['author_id']);
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setAuthor($author)
-    {
-        if ($author === null) {
-            $this->attributes['author_id'] = null;
-            $this->attributes['author_type'] = null;
-
-            return $this;
-        }
-
-        if (!is_a($author, Model::class)) {
-            throw new InvalidArgumentException('Invalid author given. Tip: author should be an Eloquent Model.');
-        }
-
-        $this->attributes['author_id'] = $author->getKey();
-        $this->attributes['author_type'] = get_class($author);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritDoc}
+     * @return string|null
      */
     public function getSource()
     {
@@ -161,10 +91,12 @@ class TraceModel extends Model implements TraceInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @param string|null $source
+     * @return self
      */
     public function setSource($source)
     {
-        $this->attributes['source'] = $source;
+        $this->attributes['source'] = substr($source, 0, 254);
+        return $this;
     }
 }
